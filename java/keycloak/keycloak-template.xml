@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.hub1989.keycloak</groupId>
-    <artifactId>hub1989-keycloak-proto</artifactId>
+    <artifactId>keycloak-proto</artifactId>
     <version>{{VERSION}}</version>
     <name>hub1989-keycloak-api</name>
     <description>hub1989 keycloak protobuf API</description>

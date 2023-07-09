@@ -15,6 +15,7 @@ sudo apt-get install -y protobuf-compiler golang-goprotobuf-dev
 mkdir -p rust/hub1989-protobuf-"${SERVICE_NAME}"/protos
 # shellcheck disable=SC2035
 cp "${SERVICE_NAME}"/*.proto "rust/hub1989-protobuf-${SERVICE_NAME}/protos"
+cp README.md "rust/hub1989-protobuf-${SERVICE_NAME}"
 # shellcheck disable=SC2164
 cd rust/hub1989-protobuf-"${SERVICE_NAME}"
 cargo login "${CARGO_TOKEN}"
