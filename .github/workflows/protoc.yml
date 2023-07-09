@@ -3,9 +3,6 @@ on:
   push:
     tags:
       - "**"
-env:
-  TOKEN: ${{ secrets.GH_PAT }}
-  GOPRIVATE: ${{ secrets.GOPRIVATE }}
 
 jobs:
   protoc_go:
