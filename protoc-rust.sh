@@ -12,7 +12,7 @@ git fetch --all && git checkout main
 git pull
 
 sudo apt-get install -y protobuf-compiler golang-goprotobuf-dev
-mkdir -p rust/hub1989-protobuf-"${SERVICE_NAME}"/protos
+rm rust/hub1989-protobuf-"${SERVICE_NAME}"/protos/*.proto
 # shellcheck disable=SC2035
 cp "${SERVICE_NAME}"/*.proto "rust/hub1989-protobuf-${SERVICE_NAME}/protos"
 cp README.md "rust/hub1989-protobuf-${SERVICE_NAME}"

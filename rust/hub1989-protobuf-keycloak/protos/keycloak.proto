@@ -1,0 +1,178 @@
+syntax = "proto3";
+
+package keycloak;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+option go_package = "github.com/hub1989/keycloak-protobuf/keycloak";
+
+//User Service
+service UserService {
+  rpc CreateUser(UserRequest) returns (google.protobuf.Empty);
+  rpc UpdateUser(UpdateUserRequest) returns (google.protobuf.Empty);
+  rpc GetUserById(google.protobuf.StringValue) returns (UserResponse);
+  rpc GetUserByUsername(google.protobuf.StringValue) returns (UserResponse);
+  rpc DeleteUser(google.protobuf.StringValue) returns (google.protobuf.Empty);
+  rpc AddUserToGroup(UserGroupRequest) returns (google.protobuf.Empty);
+  rpc RemoveUserFromGroup(UserGroupRequest) returns (google.protobuf.Empty);
+  rpc Authenticate(AuthenticateRequest) returns (AccessTokenResponse);
+  rpc GetAllUsers(google.protobuf.Empty) returns (UsersResponse);
+
+  rpc GetUsersByIds(StringsRequest) returns (UsersResponse);
+  rpc GetUsersByUsernames(StringsRequest) returns (UsersResponse);
+
+  rpc setUserPassword(PasswordRequest) returns (google.protobuf.BoolValue);
+}
+
+message PasswordRequest {
+  string userId = 1;
+  string password = 2;
+  bool temporary = 3;
+}
+
+message AuthenticateRequest {
+  string username = 1;
+  string password = 2;
+  google.protobuf.StringValue clientId = 3;
+  google.protobuf.StringValue clientSecret = 4;
+}
+
+message UserGroupRequest {
+  string groupId = 1;
+  string userId = 2;
+}
+
+message UserRequest {
+  google.protobuf.StringValue email = 1;
+  google.protobuf.StringValue phoneNumber = 2;
+  google.protobuf.StringValue firstName = 3;
+  google.protobuf.StringValue lastName = 4;
+  string password = 5;
+  map<string, string> attributes = 6;
+  string username = 7;
+  bool enabled = 8;
+  bool emailVerified = 9;
+  bool passwordTemporary = 10;
+}
+
+message UpdateUserRequest {
+  google.protobuf.StringValue email = 1;
+  google.protobuf.StringValue phoneNumber = 2;
+  google.protobuf.StringValue firstName = 3;
+  google.protobuf.StringValue lastName = 4;
+  string pid = 5;
+  map<string, string> attributes = 6;
+  bool enabled = 8;
+  bool emailVerified = 9;
+}
+
+message UserResponse {
+  string email = 1;
+  google.protobuf.StringValue phoneNumber = 2;
+  google.protobuf.StringValue givenName = 3;
+  google.protobuf.StringValue familyName = 4;
+  string sub = 5;
+  map<string, string> attributes = 6;
+  repeated string roles = 7;
+  string username = 8;
+}
+
+message UsersResponse {
+  repeated UserResponse users = 1;
+}
+
+message AccessTokenResponse {
+  string accessToken = 1;
+  int32 ExpiresIn = 2;
+  int32 RefreshExpiresIn = 3;
+  string RefreshToken = 4;
+  string TokenType = 5;
+  string IdToken = 6;
+  int32 NotBeforePolicy = 7;
+  string SessionState = 8;
+  string Scope = 9;
+}
+
+// Group Service
+service GroupService {
+  rpc CreateGroup(GroupRequest) returns (GroupResponse);
+  rpc GetGroupsInRealm(google.protobuf.StringValue) returns (GroupsResponse);
+  rpc GetGroupById(google.protobuf.StringValue) returns (GroupResponse);
+  rpc DeleteGroup(google.protobuf.StringValue) returns (google.protobuf.Empty);
+  rpc GetGroupMembers(google.protobuf.StringValue) returns (UsersResponse);
+  rpc AddRoleToGroup(RoleGroupRequest) returns (google.protobuf.Empty);
+}
+
+message RoleGroupRequest {
+  RoleRequest role = 1;
+  string groupId = 2;
+}
+
+message GroupRequest {
+  google.protobuf.StringValue id = 1;
+  google.protobuf.StringValue name = 2;
+}
+
+message GroupResponse {
+  string id = 1;
+  string name = 2;
+}
+
+message GroupsResponse {
+  repeated GroupResponse groups = 1;
+}
+
+// Role Service
+service RoleService {
+  rpc AssignRoleToUser(UserRoleRequest) returns (google.protobuf.Empty);
+  rpc GetUserRoles(google.protobuf.StringValue) returns (RolesResponse);
+  rpc GetAvailableRoles(google.protobuf.StringValue) returns (RolesResponse);
+  rpc RemoveRoleFromUser(UserRoleRequest) returns (google.protobuf.Empty);
+  rpc CreateRole(RoleRequest) returns (google.protobuf.Empty);
+}
+
+message UserRoleRequest {
+  string userId = 1;
+  RoleRequest role = 2;
+}
+
+message RoleRequest {
+  google.protobuf.StringValue id = 1;
+  google.protobuf.StringValue name = 2;
+}
+
+message RoleResponse {
+  string id = 1;
+  string name = 2;
+}
+
+message RolesResponse {
+  repeated RoleResponse roles = 1;
+}
+
+service ClientService {
+  rpc GetClients(google.protobuf.Empty) returns (ClientsResponse);
+  rpc GetClientByClientId(google.protobuf.StringValue) returns (ClientResponse);
+  rpc GetClientById(google.protobuf.StringValue) returns (ClientResponse);
+  rpc GetClientsByIds(StringsRequest) returns (ClientsResponse);
+  rpc GetClientsByClientIds(StringsRequest) returns (ClientsResponse);
+}
+
+message ClientResponse {
+  string id = 1;
+  string clientId = 2;
+  string name = 3;
+  string rootUrl = 4;
+  string webUrl = 5;
+  bool enabled = 6;
+  map<string, string> attributes = 7;
+}
+
+message ClientsResponse {
+  repeated ClientResponse clients = 1;
+}
+
+message StringsRequest {
+  repeated string requests = 1;
+}
